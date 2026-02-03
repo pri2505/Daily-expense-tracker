@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Daily Expense Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 20px 25px;
+            width: 380px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background: #f1f1f1;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .expense-info {
+            font-size: 14px;
+        }
+
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+
+        .total {
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 16px;
+            text-align: center;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Daily Expense Tracker</h2>
+
+    <input type="text" id="expenseName" placeholder="Expense Name">
+    <input type="number" id="expenseAmount" placeholder="Amount">
+    
+    <select id="expenseCategory">
+        <option value="">Select Category</option>
+        <option>Food</option>
+        <option>Travel</option>
+        <option>Shopping</option>
+        <option>Bills</option>
+        <option>Others</option>
+    </select>
+
+    <button onclick="addExpense()">Add Expense</button>
+
+    <ul id="expenseList"></ul>
+
+    <div class="total">
+        Total Expense: ₹ <span id="totalAmount">0</span>
+    </div>
+</div>
+
+<script>
+    let total = 0;
+
+    function addExpense() {
+        const name = document.getElementById("expenseName").value;
+        const amount = document.getElementById("expenseAmount").value;
+        const category = document.getElementById("expenseCategory").value;
+
+        if (name === "" || amount === "" || category === "") {
+            alert("Please fill all fields");
+            return;
+        }
+
+        const expenseList = document.getElementById("expenseList");
+
+        const li = document.createElement("li");
+
+        li.innerHTML = `
+            <div class="expense-info">
+                <strong>${name}</strong> (${category}) - ₹${amount}
+            </div>
+            <button class="delete-btn" onclick="deleteExpense(this, ${amount})">
+                Delete
+            </button>
+        `;
+
+        expenseList.appendChild(li);
+
+        total += Number(amount);
+        document.getElementById("totalAmount").innerText = total;
+
+        document.getElementById("expenseName").value = "";
+        document.getElementById("expenseAmount").value = "";
+        document.getElementById("expenseCategory").value = "";
+    }
+
+    function deleteExpense(button, amount) {
+        const li = button.parentElement;
+        li.remove();
+
+        total -= Number(amount);
+        document.getElementById("totalAmount").innerText = total;
+    }
+</script>
+
+</body>
+</html>
